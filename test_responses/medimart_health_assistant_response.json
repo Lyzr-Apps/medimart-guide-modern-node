@@ -1,0 +1,18 @@
+{
+  "message": "मैं समझती हूं कि आपको सिरदर्द और हल्का बुखार है। चूंकि आप 6 महीने की गर्भवती हैं, इसलिए मैं आपको सलाह दूंगी कि आप तुरंत अपने डॉक्टर से परामर्श करें।\n\nI understand you have a headache and mild fever. Since you are 6 months pregnant, I strongly recommend consulting your doctor immediately.\n\n**Safe Steps You Can Take Now:**\n- Rest in a cool, comfortable place\n- Stay hydrated with water\n- Apply a cool compress to your forehead\n- Avoid self-medication\n\n**When to Seek Immediate Care:**\n- If fever rises above 100.4°F (38°C)\n- Severe headache or vision changes\n- Any abdominal pain or cramping",
+  "risk_level": "MODERATE",
+  "pregnancy_alert": true,
+  "recommendation": "CONSULT_DOCTOR_URGENTLY",
+  "language_used": "BILINGUAL_HINDI_ENGLISH",
+  "safe_home_remedies": [
+    "Rest and adequate sleep",
+    "Drink plenty of water",
+    "Cool compress for headache"
+  ],
+  "warning_signs": [
+    "High fever (>100.4°F)",
+    "Severe headache",
+    "Vision changes",
+    "Abdominal pain"
+  ]
+}

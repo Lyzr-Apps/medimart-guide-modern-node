@@ -1,0 +1,21 @@
+{
+  "medicine_name": "Paracetamol",
+  "generic_name": "Acetaminophen",
+  "category": "Analgesic, Antipyretic",
+  "uses": [
+    "Pain relief (headache, toothache, muscle pain)",
+    "Fever reduction",
+    "Cold and flu symptoms"
+  ],
+  "pregnancy_warning": "Generally safe during pregnancy when used as directed. Consult doctor for prolonged use.",
+  "side_effects": [
+    "Rare: Nausea, allergic reactions",
+    "Overdose can cause liver damage"
+  ],
+  "contraindications": [
+    "Severe liver disease",
+    "Alcohol dependence",
+    "Allergy to paracetamol"
+  ],
+  "dosage_note": "Consult healthcare provider for proper dosage"
+}

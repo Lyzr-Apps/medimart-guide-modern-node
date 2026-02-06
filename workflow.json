@@ -1,0 +1,78 @@
+{
+  "workflow_name": "Medimart Digital Health Assistant",
+  "workflow_description": "Multilingual health assistant system with medicine scanner and personalized health guidance",
+  "workflow_type": "independent_agents",
+  "nodes": [
+    {
+      "id": "input_node",
+      "type": "Input",
+      "label": "User Input",
+      "nodeCategory": "input"
+    },
+    {
+      "id": "medicine_scanner_agent",
+      "type": "Agent",
+      "label": "Medimart Medicine Scanner",
+      "nodeCategory": "agent",
+      "agent_id": "6985a5fb5eb49186d63e5df4",
+      "agent_name": "Medimart Medicine Scanner",
+      "description": "Lightweight agent that extracts medicine name from scanned strips, matches with stored data, returns structured info (name, use, warnings). No conversation, no personalization - factual output only.",
+      "trigger": "Scan Medicine button on Dashboard",
+      "model": "gpt-4o",
+      "provider": "OpenAI",
+      "temperature": 0.2,
+      "has_knowledge_base": true,
+      "rag_id": "6985a5b6de7de278e55d2897"
+    },
+    {
+      "id": "health_assistant_agent",
+      "type": "Agent",
+      "label": "Medimart Health Assistant",
+      "nodeCategory": "agent",
+      "agent_id": "6985a61fe2c0086a4fc43bf1",
+      "agent_name": "Medimart Health Assistant",
+      "description": "Multilingual health guide providing symptom guidance, medicine explanations, and personalized risk assessment based on user profile (age, pregnancy status, allergies). Uses calm, non-technical language with extra caution for pregnant users. Never prescribes medicines or dosages.",
+      "trigger": "Send in Chat Interface, Auto (after Scanner output)",
+      "model": "gpt-4o",
+      "provider": "OpenAI",
+      "temperature": 0.4,
+      "has_knowledge_base": true,
+      "rag_id": "6985a5b6de7de278e55d2897"
+    },
+    {
+      "id": "output_node",
+      "type": "Output",
+      "label": "Assistant Response",
+      "nodeCategory": "end"
+    }
+  ],
+  "edges": [
+    {
+      "source": "input_node",
+      "target": "medicine_scanner_agent",
+      "label": "Scan Workflow"
+    },
+    {
+      "source": "input_node",
+      "target": "health_assistant_agent",
+      "label": "Chat Workflow"
+    },
+    {
+      "source": "medicine_scanner_agent",
+      "target": "health_assistant_agent",
+      "label": "Scanner Output Handoff"
+    },
+    {
+      "source": "health_assistant_agent",
+      "target": "output_node",
+      "label": "Final Response"
+    }
+  ],
+  "knowledge_base": {
+    "rag_id": "6985a5b6de7de278e55d2897",
+    "rag_name": "medimartmedicinedatabasec7bl",
+    "name": "Medimart Medicine Database",
+    "description": "Comprehensive medicine database containing common medicines information, pregnancy warnings, health tips in Hindi and English"
+  },
+  "created_at": "2026-02-06T00:00:00Z"
+}

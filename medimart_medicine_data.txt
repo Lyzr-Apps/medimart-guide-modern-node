@@ -1,0 +1,223 @@
+MEDIMART MEDICINE DATABASE - COMPREHENSIVE MEDICINE INFORMATION
+
+==========================================
+MEDICINE: PARACETAMOL (Acetaminophen)
+==========================================
+Generic Name: Paracetamol
+Brand Names: Crocin, Dolo, Calpol
+Category: Analgesic, Antipyretic
+
+USES:
+- Relief from mild to moderate pain (headache, toothache, body ache)
+- Reduces fever
+- Safe for general use in adults and children
+
+DOSAGE GUIDELINES:
+- Adults: 500-1000mg every 4-6 hours (max 4000mg/day)
+- Children: As per weight and age (consult doctor)
+
+SIDE EFFECTS:
+- Generally well-tolerated
+- Rare: Nausea, skin rash, liver damage (overdose)
+
+PREGNANCY WARNING: SAFE - Generally considered safe during pregnancy when used as directed. Always consult doctor before use.
+
+CONTRAINDICATIONS:
+- Severe liver disease
+- Allergy to paracetamol
+
+HINDI INFO:
+नाम: पैरासिटामोल
+उपयोग: दर्द और बुखार की दवा
+सावधानी: गर्भावस्था में सुरक्षित लेकिन डॉक्टर से सलाह लें
+
+==========================================
+MEDICINE: IBUPROFEN
+==========================================
+Generic Name: Ibuprofen
+Brand Names: Brufen, Advil, Combiflam
+Category: NSAID (Non-Steroidal Anti-Inflammatory Drug)
+
+USES:
+- Pain relief (headache, dental pain, menstrual cramps)
+- Reduces inflammation
+- Fever reduction
+- Arthritis pain management
+
+DOSAGE GUIDELINES:
+- Adults: 200-400mg every 4-6 hours (max 1200mg/day without prescription)
+- Take with food to avoid stomach upset
+
+SIDE EFFECTS:
+- Stomach upset, nausea
+- Heartburn, dizziness
+- Rare: Stomach ulcers, kidney problems
+
+PREGNANCY WARNING: AVOID - Not recommended during pregnancy, especially in third trimester. May cause complications. Consult doctor immediately.
+
+CONTRAINDICATIONS:
+- Active stomach ulcers
+- Severe heart disease
+- Third trimester of pregnancy
+- Aspirin allergy
+
+HINDI INFO:
+नाम: आइबुप्रोफेन
+उपयोग: दर्द और सूजन की दवा
+चेतावनी: गर्भावस्था में उपयोग न करें, खासकर आखिरी तिमाही में
+
+==========================================
+MEDICINE: ASPIRIN (Acetylsalicylic Acid)
+==========================================
+Generic Name: Aspirin
+Brand Names: Disprin, Ecosprin
+Category: NSAID, Antiplatelet
+
+USES:
+- Pain and fever relief
+- Reduces inflammation
+- Blood thinner (prevents heart attacks and strokes)
+- Reduces risk of blood clots
+
+DOSAGE GUIDELINES:
+- Pain relief: 300-600mg every 4-6 hours
+- Heart protection: 75-150mg daily (low dose)
+- Take with food
+
+SIDE EFFECTS:
+- Stomach irritation
+- Increased bleeding risk
+- Allergic reactions (rash, breathing problems)
+
+PREGNANCY WARNING: AVOID - Not safe during pregnancy, especially third trimester. May cause bleeding complications and harm to baby. Avoid unless specifically prescribed.
+
+CONTRAINDICATIONS:
+- Children under 16 (risk of Reye's syndrome)
+- Active bleeding disorders
+- Stomach ulcers
+- Pregnancy (third trimester)
+
+HINDI INFO:
+नाम: एस्पिरिन
+उपयोग: दर्द, बुखार और रक्त को पतला करने की दवा
+चेतावनी: गर्भावस्था में बिल्कुल न लें, बच्चों को न दें
+
+==========================================
+MEDICINE: METFORMIN
+==========================================
+Generic Name: Metformin Hydrochloride
+Brand Names: Glycomet, Glucophage
+Category: Anti-diabetic (Biguanide)
+
+USES:
+- Type 2 Diabetes management
+- Controls blood sugar levels
+- May help with weight management in diabetic patients
+- PCOS (Polycystic Ovary Syndrome) treatment
+
+DOSAGE GUIDELINES:
+- Starting dose: 500mg once or twice daily with meals
+- Maintenance: 500-2000mg per day in divided doses
+- Must be taken with food
+
+SIDE EFFECTS:
+- Nausea, diarrhea (common initially)
+- Stomach upset
+- Metallic taste
+- Rare: Lactic acidosis (serious)
+
+PREGNANCY WARNING: CONSULT DOCTOR - May be used during pregnancy under medical supervision for gestational diabetes. Self-medication not recommended.
+
+CONTRAINDICATIONS:
+- Severe kidney disease
+- Liver disease
+- Heart failure
+- Heavy alcohol use
+
+HINDI INFO:
+नाम: मेटफॉर्मिन
+उपयोग: मधुमेह (शुगर) की दवा
+सावधानी: गर्भावस्था में केवल डॉक्टर की सलाह से लें
+
+==========================================
+MEDICINE: AMOXICILLIN
+==========================================
+Generic Name: Amoxicillin
+Brand Names: Mox, Amoxil, Novamox
+Category: Antibiotic (Penicillin group)
+
+USES:
+- Bacterial infections (respiratory, ear, throat, urinary)
+- Dental infections
+- Skin infections
+- H. pylori treatment (with other medicines)
+
+DOSAGE GUIDELINES:
+- Adults: 250-500mg every 8 hours OR 500-875mg every 12 hours
+- Complete full course even if feeling better
+- Take with or without food
+
+SIDE EFFECTS:
+- Diarrhea, nausea
+- Skin rash
+- Yeast infections
+- Allergic reactions (serious if penicillin allergy)
+
+PREGNANCY WARNING: GENERALLY SAFE - Considered safe during pregnancy when prescribed by doctor. Commonly used antibiotic in pregnancy.
+
+CONTRAINDICATIONS:
+- Penicillin allergy
+- History of liver problems with amoxicillin
+- Infectious mononucleosis
+
+HINDI INFO:
+नाम: अमोक्सिसिलिन
+उपयोग: बैक्टीरिया संक्रमण की दवा (एंटीबायोटिक)
+सावधानी: गर्भावस्था में आमतौर पर सुरक्षित, डॉक्टर की सलाह से लें
+
+==========================================
+GENERAL HEALTH TIPS / सामान्य स्वास्थ्य सुझाव
+==========================================
+
+ENGLISH:
+1. Always complete the full course of antibiotics even if you feel better
+2. Never share prescription medicines with others
+3. Store medicines in cool, dry place away from children
+4. Check expiry dates before consuming any medicine
+5. Pregnant women should consult doctor before taking any medicine
+6. Take medicines with food if they cause stomach upset
+7. Inform your doctor about all medicines you are currently taking
+8. Never exceed recommended dosage without medical advice
+
+HINDI:
+1. एंटीबायोटिक्स का पूरा कोर्स करें, भले ही आप बेहतर महसूस करें
+2. कभी भी दूसरों के साथ अपनी दवाएं साझा न करें
+3. दवाओं को ठंडी, सूखी जगह पर बच्चों से दूर रखें
+4. कोई भी दवा लेने से पहले समाप्ति तिथि जांचें
+5. गर्भवती महिलाओं को कोई भी दवा लेने से पहले डॉक्टर से परामर्श लेना चाहिए
+6. यदि दवाएं पेट खराब करती हैं तो भोजन के साथ लें
+7. अपने डॉक्टर को उन सभी दवाओं के बारे में बताएं जो आप वर्तमान में ले रहे हैं
+8. चिकित्सा सलाह के बिना अनुशंसित खुराक से अधिक न लें
+
+==========================================
+PREGNANCY SAFETY SUMMARY
+==========================================
+
+SAFE IN PREGNANCY:
+- Paracetamol (with doctor consultation)
+- Amoxicillin (when prescribed)
+
+AVOID IN PREGNANCY:
+- Ibuprofen (especially third trimester)
+- Aspirin (especially third trimester)
+
+CONSULT DOCTOR:
+- Metformin (may be used under supervision)
+- All other medicines not listed above
+
+IMPORTANT: Every pregnancy is different. Always inform your healthcare provider that you are pregnant before taking any medicine.
+
+गर्भावस्था में सुरक्षा सारांश:
+गर्भावस्था में सुरक्षित: पैरासिटामोल (डॉक्टर से पूछकर), अमोक्सिसिलिन
+गर्भावस्था में बचें: आइबुप्रोफेन, एस्पिरिन
+डॉक्टर से परामर्श लें: मेटफॉर्मिन और अन्य सभी दवाएं
