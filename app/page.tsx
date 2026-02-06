@@ -5,7 +5,7 @@ import { callAIAgent, uploadFiles } from '@/lib/aiAgent'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Loader2, Camera, MessageSquare, ChevronDown, ChevronUp, Send, User, Globe, ArrowLeft, Upload, AlertTriangle } from 'lucide-react'
+import { Loader2, Camera, MessageSquare, ChevronDown, ChevronUp, Send, User, Globe, ArrowLeft, Upload, AlertTriangle, Heart, Baby, Shield, Sparkles, Users, CheckCircle, Star } from 'lucide-react'
 
 // Agent IDs
 const MEDICINE_SCANNER_AGENT_ID = '6985a5fb5eb49186d63e5df4'
@@ -56,12 +56,12 @@ interface ActivityItem {
   timestamp: Date
 }
 
-type Screen = 'login' | 'language' | 'dashboard' | 'chat' | 'scan'
+type Screen = 'landing' | 'login' | 'language' | 'dashboard' | 'chat' | 'scan'
 type Language = 'hindi' | 'english' | ''
 
 export default function Home() {
   // State Management
-  const [currentScreen, setCurrentScreen] = useState<Screen>('login')
+  const [currentScreen, setCurrentScreen] = useState<Screen>('landing')
   const [userProfile, setUserProfile] = useState<UserProfile>({
     name: '',
     age: '',
@@ -502,6 +502,101 @@ export default function Home() {
       ]
 
   // Screen Renders
+  const renderLanding = () => (
+    <div className="min-h-screen bg-gradient-to-br from-[#FFE5EC] via-[#FFF0F5] to-[#E0F4FF] flex flex-col">
+      {/* Hero Section */}
+      <div className="flex-1 flex flex-col items-center justify-center px-4 py-12">
+        <div className="text-center max-w-4xl mx-auto space-y-8">
+          {/* Logo/Icon */}
+          <div className="mx-auto w-24 h-24 bg-gradient-to-br from-[#FFB6C1] to-[#87CEEB] rounded-full flex items-center justify-center shadow-2xl mb-6">
+            <Heart className="w-14 h-14 text-white" />
+          </div>
+
+          {/* Main Title */}
+          <div className="space-y-3">
+            <h1 className="text-5xl md:text-6xl font-bold text-gray-800 tracking-tight">
+              Medimart
+            </h1>
+            <p className="text-2xl md:text-3xl font-semibold text-[#FF69B4]">
+              Your Mother Friendly App
+            </p>
+          </div>
+
+          {/* Subtitle */}
+          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            A caring health companion designed especially for expecting mothers and families. Get personalized health guidance, scan medicines for safety, and chat with our AI health assistant.
+          </p>
+
+          {/* Feature Highlights */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 mb-12">
+            <div className="bg-white/70 backdrop-blur-sm rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all border-2 border-[#FFB6C1]/30">
+              <div className="w-16 h-16 bg-gradient-to-br from-[#FFB6C1] to-[#FFD1DC] rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Baby className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-lg font-bold text-gray-800 mb-2">Pregnancy Safe</h3>
+              <p className="text-sm text-gray-600">Specialized guidance for expecting mothers with pregnancy-aware recommendations</p>
+            </div>
+
+            <div className="bg-white/70 backdrop-blur-sm rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all border-2 border-[#87CEEB]/30">
+              <div className="w-16 h-16 bg-gradient-to-br from-[#87CEEB] to-[#B0E0E6] rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Shield className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-lg font-bold text-gray-800 mb-2">Medicine Scanner</h3>
+              <p className="text-sm text-gray-600">Scan medicine packages to check safety and get detailed information</p>
+            </div>
+
+            <div className="bg-white/70 backdrop-blur-sm rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all border-2 border-[#FFB6C1]/30">
+              <div className="w-16 h-16 bg-gradient-to-br from-[#DDA0DD] to-[#E6A8D7] rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Sparkles className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-lg font-bold text-gray-800 mb-2">AI Health Assistant</h3>
+              <p className="text-sm text-gray-600">24/7 personalized health guidance in Hindi and English</p>
+            </div>
+          </div>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-12">
+            <Button
+              onClick={() => setCurrentScreen('login')}
+              className="w-full sm:w-auto px-12 py-6 text-lg font-bold bg-gradient-to-r from-[#FFB6C1] to-[#FF69B4] hover:from-[#FF69B4] hover:to-[#FFB6C1] text-white rounded-full shadow-xl hover:shadow-2xl transition-all"
+            >
+              <Users className="w-5 h-5 mr-2" />
+              Login
+            </Button>
+            <Button
+              onClick={() => setCurrentScreen('login')}
+              className="w-full sm:w-auto px-12 py-6 text-lg font-bold bg-gradient-to-r from-[#87CEEB] to-[#4682B4] hover:from-[#4682B4] hover:to-[#87CEEB] text-white rounded-full shadow-xl hover:shadow-2xl transition-all"
+            >
+              <Star className="w-5 h-5 mr-2" />
+              Sign Up
+            </Button>
+          </div>
+
+          {/* Trust Badges */}
+          <div className="mt-16 flex flex-wrap justify-center gap-8 items-center opacity-70">
+            <div className="flex items-center gap-2 text-gray-600">
+              <CheckCircle className="w-5 h-5 text-green-500" />
+              <span className="text-sm font-medium">Trusted by 10,000+ mothers</span>
+            </div>
+            <div className="flex items-center gap-2 text-gray-600">
+              <CheckCircle className="w-5 h-5 text-green-500" />
+              <span className="text-sm font-medium">Bilingual Support</span>
+            </div>
+            <div className="flex items-center gap-2 text-gray-600">
+              <CheckCircle className="w-5 h-5 text-green-500" />
+              <span className="text-sm font-medium">100% Safe & Secure</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="py-6 text-center text-sm text-gray-500 bg-white/30 backdrop-blur-sm">
+        <p>Medimart Digital Health &copy; 2026 - Caring for mothers and families</p>
+      </div>
+    </div>
+  )
+
   const renderLogin = () => (
     <div className="min-h-screen bg-gradient-to-br from-[#FFF8F0] via-[#FFE8D6] to-[#E8F5F1] flex items-center justify-center p-4">
       <Card className="w-full max-w-md shadow-xl">
@@ -1022,6 +1117,7 @@ export default function Home() {
   // Render current screen
   return (
     <>
+      {currentScreen === 'landing' && renderLanding()}
       {currentScreen === 'login' && renderLogin()}
       {currentScreen === 'language' && renderLanguageSelection()}
       {currentScreen === 'dashboard' && renderDashboard()}
