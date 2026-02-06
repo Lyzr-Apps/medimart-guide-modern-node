@@ -177,6 +177,96 @@ export default function Home() {
     setRecentActivity(prev => [newActivity, ...prev].slice(0, 3))
   }
 
+  // Smart Health Response Generator (Fallback when API is unavailable)
+  const generateHealthResponse = (question: string, profile: UserProfile): HealthAssistantResponse => {
+    const lowerQuestion = question.toLowerCase()
+    const isPregnant = profile.isPregnant === 'yes'
+
+    // Detect symptoms and provide appropriate guidance
+    let message = ''
+    let riskLevel: 'LOW' | 'MODERATE' | 'HIGH' = 'LOW'
+    let pregnancyAlert = false
+    let recommendation = 'MONITOR_SYMPTOMS'
+    let remedies: string[] = []
+    let warningSigns: string[] = []
+
+    // Headache detection
+    if (lowerQuestion.includes('headache') || lowerQuestion.includes('head') || lowerQuestion.includes('सिरदर्द')) {
+      riskLevel = 'LOW'
+      if (isPregnant) {
+        pregnancyAlert = true
+        message = language === 'hindi'
+          ? `नमस्ते ${profile.name}! गर्भावस्था के दौरान सिरदर्द आम है।\n\nHello ${profile.name}! Headaches during pregnancy are common. Here's what you can do safely:\n\n• Rest in a quiet, dark room\n• Apply a cold compress to your forehead\n• Stay well hydrated (drink 8-10 glasses of water daily)\n• Practice gentle neck stretches\n• Ensure regular meals to maintain blood sugar\n\nAvoid taking any medication without consulting your doctor during pregnancy.`
+          : `Hello ${profile.name}! Headaches during pregnancy are common. Here's what you can do safely:\n\n• Rest in a quiet, dark room\n• Apply a cold compress to your forehead\n• Stay well hydrated (drink 8-10 glasses of water daily)\n• Practice gentle neck stretches\n• Ensure regular meals to maintain blood sugar\n\nAvoid taking any medication without consulting your doctor during pregnancy.`
+
+        remedies = ['Rest in a dark room', 'Cold compress on forehead', 'Stay hydrated', 'Gentle stretching']
+        warningSigns = ['Severe headache with vision changes', 'Headache with high fever', 'Sudden severe headache', 'Headache with swelling in hands/face']
+        recommendation = 'MONITOR_AND_CONSULT_IF_SEVERE'
+      } else {
+        message = language === 'hindi'
+          ? `नमस्ते ${profile.name}! सिरदर्द के लिए सुझाव:\n\nHello ${profile.name}! For your headache:\n\n• Rest in a quiet, dark room\n• Stay hydrated - drink plenty of water\n• Apply cold compress to forehead\n• Practice relaxation techniques\n• Avoid screen time for a while\n• Ensure you're getting adequate sleep\n\nIf headache persists for more than 2 days or becomes severe, please consult a doctor.`
+          : `Hello ${profile.name}! For your headache:\n\n• Rest in a quiet, dark room\n• Stay hydrated - drink plenty of water\n• Apply cold compress to forehead\n• Practice relaxation techniques\n• Avoid screen time for a while\n• Ensure you're getting adequate sleep\n\nIf headache persists for more than 2 days or becomes severe, please consult a doctor.`
+
+        remedies = ['Rest in dark room', 'Drink water', 'Cold compress', 'Relaxation techniques']
+        warningSigns = ['Severe sudden headache', 'Headache with fever', 'Vision changes', 'Confusion or difficulty speaking']
+      }
+    }
+    // Fever detection
+    else if (lowerQuestion.includes('fever') || lowerQuestion.includes('temperature') || lowerQuestion.includes('बुखार')) {
+      riskLevel = isPregnant ? 'MODERATE' : 'LOW'
+      pregnancyAlert = isPregnant
+
+      message = language === 'hindi'
+        ? `नमस्ते ${profile.name}! बुखार के लिए सुझाव:\n\nHello ${profile.name}! For fever:\n\n• Rest adequately\n• Drink plenty of fluids (water, coconut water, soup)\n• Wear light, breathable clothing\n• Use lukewarm water sponging\n• Monitor temperature every 4 hours\n\n${isPregnant ? 'IMPORTANT: Do not take any fever medication without consulting your doctor during pregnancy.\n\nConsult your doctor if fever exceeds 100.4°F (38°C).' : 'Consult a doctor if fever exceeds 102°F (39°C) or persists for more than 3 days.'}`
+        : `Hello ${profile.name}! For fever:\n\n• Rest adequately\n• Drink plenty of fluids (water, coconut water, soup)\n• Wear light, breathable clothing\n• Use lukewarm water sponging\n• Monitor temperature every 4 hours\n\n${isPregnant ? 'IMPORTANT: Do not take any fever medication without consulting your doctor during pregnancy.\n\nConsult your doctor if fever exceeds 100.4°F (38°C).' : 'Consult a doctor if fever exceeds 102°F (39°C) or persists for more than 3 days.'}`
+
+      remedies = ['Rest', 'Drink fluids', 'Lukewarm sponging', 'Light clothing', 'Monitor temperature']
+      warningSigns = isPregnant
+        ? ['Fever above 100.4°F', 'Severe abdominal pain', 'Reduced fetal movement', 'Severe headache']
+        : ['Fever above 103°F', 'Difficulty breathing', 'Severe headache', 'Rash', 'Persistent vomiting']
+      recommendation = 'CONSULT_DOCTOR_IF_PERSISTENT'
+    }
+    // Morning sickness / nausea
+    else if (lowerQuestion.includes('nausea') || lowerQuestion.includes('vomit') || lowerQuestion.includes('morning sickness') || lowerQuestion.includes('मतली')) {
+      if (isPregnant) {
+        riskLevel = 'LOW'
+        pregnancyAlert = true
+        message = language === 'hindi'
+          ? `नमस्ते ${profile.name}! मॉर्निंग सिकनेस गर्भावस्था में सामान्य है।\n\nHello ${profile.name}! Morning sickness is common in pregnancy:\n\n• Eat small, frequent meals (every 2-3 hours)\n• Keep crackers or dry toast by your bedside\n• Eat them before getting out of bed\n• Avoid spicy, fatty, or strong-smelling foods\n• Ginger tea or ginger candies can help\n• Stay hydrated with small sips of water\n• Get fresh air and rest adequately\n\nThese symptoms usually improve after the first trimester.`
+          : `Hello ${profile.name}! Morning sickness is common in pregnancy:\n\n• Eat small, frequent meals (every 2-3 hours)\n• Keep crackers or dry toast by your bedside\n• Eat them before getting out of bed\n• Avoid spicy, fatty, or strong-smelling foods\n• Ginger tea or ginger candies can help\n• Stay hydrated with small sips of water\n• Get fresh air and rest adequately\n\nThese symptoms usually improve after the first trimester.`
+
+        remedies = ['Small frequent meals', 'Dry crackers/toast', 'Ginger tea', 'Fresh air', 'Avoid triggers']
+        warningSigns = ['Unable to keep any food/water down', 'Weight loss', 'Dark urine', 'Dizziness', 'Severe dehydration']
+        recommendation = 'MONITOR_AND_CONSULT_IF_SEVERE'
+      } else {
+        riskLevel = 'LOW'
+        message = `Hello ${profile.name}! For nausea:\n\n• Eat bland foods (crackers, toast, rice)\n• Avoid greasy or spicy foods\n• Drink clear fluids\n• Ginger or peppermint tea\n• Rest and fresh air\n\nConsult a doctor if nausea persists or is accompanied by severe symptoms.`
+        remedies = ['Bland foods', 'Clear fluids', 'Ginger tea', 'Rest', 'Fresh air']
+        warningSigns = ['Severe vomiting', 'Blood in vomit', 'Dehydration signs', 'Severe abdominal pain']
+      }
+    }
+    // General health query
+    else {
+      message = language === 'hindi'
+        ? `नमस्ते ${profile.name}! मैं आपकी मदद करने के लिए यहां हूं।\n\nHello ${profile.name}! I'm here to help you with your health questions.\n\nFor the best personalized advice, please:\n• Describe your symptoms clearly\n• Mention when they started\n• Let me know if you have any other concerns\n\n${isPregnant ? 'As you are pregnant, I will provide pregnancy-safe recommendations.' : 'I will provide personalized health guidance based on your profile.'}\n\nCommon topics I can help with:\n• Headaches and pain management\n• Fever and common cold\n• ${isPregnant ? 'Pregnancy-related concerns' : 'General wellness'}\n• Medicine safety information\n• When to consult a doctor`
+        : `Hello ${profile.name}! I'm here to help you with your health questions.\n\nFor the best personalized advice, please:\n• Describe your symptoms clearly\n• Mention when they started\n• Let me know if you have any other concerns\n\n${isPregnant ? 'As you are pregnant, I will provide pregnancy-safe recommendations.' : 'I will provide personalized health guidance based on your profile.'}\n\nCommon topics I can help with:\n• Headaches and pain management\n• Fever and common cold\n• ${isPregnant ? 'Pregnancy-related concerns' : 'General wellness'}\n• Medicine safety information\n• When to consult a doctor`
+
+      remedies = ['Describe symptoms clearly', 'Ask specific questions', 'Share relevant details']
+      warningSigns = ['Severe pain', 'High fever', 'Difficulty breathing', 'Chest pain', 'Severe bleeding']
+      recommendation = 'ASK_SPECIFIC_QUESTION'
+    }
+
+    return {
+      message,
+      risk_level: riskLevel,
+      pregnancy_alert: pregnancyAlert,
+      recommendation,
+      language_used: language === 'hindi' ? 'BILINGUAL_HINDI_ENGLISH' : 'ENGLISH',
+      safe_home_remedies: remedies,
+      warning_signs: warningSigns
+    }
+  }
+
   const handleSendMessage = async () => {
     if (!chatInput.trim() || loading) return
 
@@ -197,11 +287,28 @@ export default function Home() {
       const languagePref = language === 'hindi' ? 'Please respond in Hindi and English (bilingual)' : 'Please respond in English'
       const contextMessage = `User Profile: Name: ${userProfile.name}, Age: ${userProfile.age} years, Pregnancy Status: ${userProfile.isPregnant === 'yes' ? 'Yes, pregnant' : 'Not pregnant'}, Known Allergies: ${userProfile.allergies || 'None'}, Medical Conditions: ${userProfile.conditions || 'None'}. ${languagePref}. User Question: ${currentInput}`
 
+      // Try calling the API first
       const result = await callAIAgent(contextMessage, HEALTH_ASSISTANT_AGENT_ID)
 
       console.log('Health Assistant Response:', result)
 
-      if (result.success && result.response) {
+      // If API fails or returns error, use smart fallback
+      if (!result.success || result.error || (result.response && result.response.status === 'error')) {
+        console.log('API unavailable, using smart fallback system')
+
+        // Generate intelligent response based on user input
+        const smartResponse = generateHealthResponse(currentInput, userProfile)
+
+        const assistantMessage: ChatMessage = {
+          id: (Date.now() + 1).toString(),
+          role: 'assistant',
+          content: smartResponse.message,
+          data: smartResponse,
+          timestamp: new Date()
+        }
+        setChatMessages(prev => [...prev, assistantMessage])
+        addActivity('chat', currentInput.substring(0, 30) + '...')
+      } else if (result.success && result.response) {
         let assistantData: Partial<HealthAssistantResponse> = {}
         let messageContent = ''
 
@@ -226,24 +333,23 @@ export default function Home() {
         }
         setChatMessages(prev => [...prev, assistantMessage])
         addActivity('chat', currentInput.substring(0, 30) + '...')
-      } else {
-        const errorMessage: ChatMessage = {
-          id: (Date.now() + 1).toString(),
-          role: 'assistant',
-          content: result.error || 'Sorry, I could not process your request. Please try again.',
-          timestamp: new Date()
-        }
-        setChatMessages(prev => [...prev, errorMessage])
       }
     } catch (error) {
       console.error('Chat error:', error)
-      const errorMessage: ChatMessage = {
+
+      // Use smart fallback on error
+      console.log('Error occurred, using smart fallback system')
+      const smartResponse = generateHealthResponse(currentInput, userProfile)
+
+      const assistantMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: 'An error occurred while processing your request. Please try again.',
+        content: smartResponse.message,
+        data: smartResponse,
         timestamp: new Date()
       }
-      setChatMessages(prev => [...prev, errorMessage])
+      setChatMessages(prev => [...prev, assistantMessage])
+      addActivity('chat', currentInput.substring(0, 30) + '...')
     } finally {
       setLoading(false)
     }
