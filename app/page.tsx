@@ -140,6 +140,21 @@ export default function Home() {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [chatMessages])
 
+  // Add welcome message when entering chat for the first time
+  useEffect(() => {
+    if (currentScreen === 'chat' && chatMessages.length === 0) {
+      const welcomeMessage: ChatMessage = {
+        id: 'welcome',
+        role: 'assistant',
+        content: language === 'hindi'
+          ? `नमस्ते ${userProfile.name}! मैं आपकी स्वास्थ्य सहायक हूं।\n\nHello ${userProfile.name}! I am your health assistant. I can help you with:\n\n• Health questions and symptoms\n• Medicine information and safety\n• Pregnancy-related health guidance\n• General wellness advice\n\nPlease feel free to ask me anything about your health!`
+          : `Hello ${userProfile.name}! I am your health assistant. I can help you with:\n\n• Health questions and symptoms\n• Medicine information and safety\n• General wellness advice\n• Personalized health recommendations\n\nPlease feel free to ask me anything about your health!`,
+        timestamp: new Date()
+      }
+      setChatMessages([welcomeMessage])
+    }
+  }, [currentScreen])
+
   // Handlers
   const handleLoginSubmit = () => {
     if (userProfile.name && userProfile.age && userProfile.isPregnant) {
@@ -173,40 +188,59 @@ export default function Home() {
     }
 
     setChatMessages(prev => [...prev, userMessage])
+    const currentInput = chatInput
     setChatInput('')
     setLoading(true)
 
     try {
       // Build context message with user profile
-      const contextMessage = `User Profile: ${userProfile.name}, Age: ${userProfile.age}, Pregnant: ${userProfile.isPregnant === 'yes' ? 'Yes (6 months)' : 'No'}, Allergies: ${userProfile.allergies || 'None'}, Conditions: ${userProfile.conditions || 'None'}. Language: ${language}. Question: ${chatInput}`
+      const languagePref = language === 'hindi' ? 'Please respond in Hindi and English (bilingual)' : 'Please respond in English'
+      const contextMessage = `User Profile: Name: ${userProfile.name}, Age: ${userProfile.age} years, Pregnancy Status: ${userProfile.isPregnant === 'yes' ? 'Yes, pregnant' : 'Not pregnant'}, Known Allergies: ${userProfile.allergies || 'None'}, Medical Conditions: ${userProfile.conditions || 'None'}. ${languagePref}. User Question: ${currentInput}`
 
       const result = await callAIAgent(contextMessage, HEALTH_ASSISTANT_AGENT_ID)
 
-      if (result.success && result.response.result) {
-        const assistantData = result.response.result as HealthAssistantResponse
+      console.log('Health Assistant Response:', result)
+
+      if (result.success && result.response) {
+        let assistantData: Partial<HealthAssistantResponse> = {}
+        let messageContent = ''
+
+        // Try to extract structured data from result
+        if (result.response.result && typeof result.response.result === 'object') {
+          assistantData = result.response.result as HealthAssistantResponse
+          messageContent = assistantData.message || result.response.message || JSON.stringify(result.response.result, null, 2)
+        } else if (result.response.message) {
+          messageContent = result.response.message
+        } else if (typeof result.response.result === 'string') {
+          messageContent = result.response.result
+        } else {
+          messageContent = 'I received your question. However, I need more information to provide a proper response.'
+        }
+
         const assistantMessage: ChatMessage = {
           id: (Date.now() + 1).toString(),
           role: 'assistant',
-          content: assistantData.message || 'No response received',
-          data: assistantData,
+          content: messageContent,
+          data: Object.keys(assistantData).length > 0 ? assistantData as HealthAssistantResponse : undefined,
           timestamp: new Date()
         }
         setChatMessages(prev => [...prev, assistantMessage])
-        addActivity('chat', chatInput.substring(0, 30) + '...')
+        addActivity('chat', currentInput.substring(0, 30) + '...')
       } else {
         const errorMessage: ChatMessage = {
           id: (Date.now() + 1).toString(),
           role: 'assistant',
-          content: 'Sorry, I could not process your request. Please try again.',
+          content: result.error || 'Sorry, I could not process your request. Please try again.',
           timestamp: new Date()
         }
         setChatMessages(prev => [...prev, errorMessage])
       }
     } catch (error) {
+      console.error('Chat error:', error)
       const errorMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: 'An error occurred. Please try again.',
+        content: 'An error occurred while processing your request. Please try again.',
         timestamp: new Date()
       }
       setChatMessages(prev => [...prev, errorMessage])
@@ -236,47 +270,88 @@ export default function Home() {
       // Upload the image
       const uploadResult = await uploadFiles(selectedFile)
 
+      console.log('Upload Result:', uploadResult)
+
       if (uploadResult.success && uploadResult.asset_ids.length > 0) {
         // Call Medicine Scanner agent with the uploaded file
-        const scanMessage = `Please scan this medicine image and provide detailed information about it.`
+        const scanMessage = `Please analyze this medicine image and extract the following information: medicine name, generic name, category, uses, pregnancy warnings, side effects, and contraindications. Provide detailed and accurate information.`
         const result = await callAIAgent(scanMessage, MEDICINE_SCANNER_AGENT_ID, {
           assets: uploadResult.asset_ids
         })
 
-        if (result.success && result.response.result) {
-          const medicineData = result.response.result as MedicineScannerResponse
-          setScanResult(medicineData)
+        console.log('Medicine Scanner Result:', result)
 
-          // Automatically pass to Health Assistant with user context
-          const healthCheckMessage = `User Profile: ${userProfile.name}, Age: ${userProfile.age}, Pregnant: ${userProfile.isPregnant === 'yes' ? 'Yes (6 months)' : 'No'}, Allergies: ${userProfile.allergies || 'None'}, Conditions: ${userProfile.conditions || 'None'}. I scanned medicine: ${medicineData.medicine_name} (${medicineData.generic_name}). Is this safe for me? ${medicineData.pregnancy_warning}`
+        if (result.success && result.response) {
+          let medicineData: Partial<MedicineScannerResponse> = {}
 
-          const healthResult = await callAIAgent(healthCheckMessage, HEALTH_ASSISTANT_AGENT_ID)
+          // Try to extract structured data
+          if (result.response.result && typeof result.response.result === 'object') {
+            medicineData = result.response.result as MedicineScannerResponse
+          }
 
-          if (healthResult.success && healthResult.response.result) {
-            const healthData = healthResult.response.result as HealthAssistantResponse
+          // Set scan result for display
+          if (medicineData.medicine_name) {
+            setScanResult(medicineData as MedicineScannerResponse)
 
-            // Add to chat messages
-            const scanChatMessage: ChatMessage = {
-              id: Date.now().toString(),
-              role: 'user',
-              content: `Scanned medicine: ${medicineData.medicine_name}`,
-              timestamp: new Date()
+            // Automatically pass to Health Assistant with user context
+            const languagePref = language === 'hindi' ? 'Please respond in Hindi and English (bilingual)' : 'Please respond in English'
+            const healthCheckMessage = `User Profile: Name: ${userProfile.name}, Age: ${userProfile.age} years, Pregnancy Status: ${userProfile.isPregnant === 'yes' ? 'Yes, pregnant' : 'Not pregnant'}, Allergies: ${userProfile.allergies || 'None'}, Medical Conditions: ${userProfile.conditions || 'None'}. ${languagePref}. I scanned this medicine: ${medicineData.medicine_name} (${medicineData.generic_name || 'generic name not available'}). ${medicineData.pregnancy_warning ? 'Pregnancy Warning: ' + medicineData.pregnancy_warning : ''} Is this medicine safe for me to take? Please provide personalized guidance based on my profile.`
+
+            const healthResult = await callAIAgent(healthCheckMessage, HEALTH_ASSISTANT_AGENT_ID)
+
+            console.log('Health Assessment Result:', healthResult)
+
+            if (healthResult.success && healthResult.response) {
+              let healthData: Partial<HealthAssistantResponse> = {}
+              let healthMessage = ''
+
+              if (healthResult.response.result && typeof healthResult.response.result === 'object') {
+                healthData = healthResult.response.result as HealthAssistantResponse
+                healthMessage = healthData.message || healthResult.response.message || 'Medicine information retrieved.'
+              } else if (healthResult.response.message) {
+                healthMessage = healthResult.response.message
+              } else if (typeof healthResult.response.result === 'string') {
+                healthMessage = healthResult.response.result
+              }
+
+              // Add to chat messages
+              const scanChatMessage: ChatMessage = {
+                id: Date.now().toString(),
+                role: 'user',
+                content: `Scanned medicine: ${medicineData.medicine_name}`,
+                timestamp: new Date()
+              }
+              const responseChatMessage: ChatMessage = {
+                id: (Date.now() + 1).toString(),
+                role: 'assistant',
+                content: healthMessage,
+                data: Object.keys(healthData).length > 0 ? healthData as HealthAssistantResponse : undefined,
+                timestamp: new Date()
+              }
+              setChatMessages(prev => [...prev, scanChatMessage, responseChatMessage])
+
+              addActivity('scan', medicineData.medicine_name)
+
+              // Switch to chat view to show results
+              setTimeout(() => setCurrentScreen('chat'), 1000)
             }
-            const responseChatMessage: ChatMessage = {
-              id: (Date.now() + 1).toString(),
-              role: 'assistant',
-              content: healthData.message,
-              data: healthData,
-              timestamp: new Date()
-            }
-            setChatMessages(prev => [...prev, scanChatMessage, responseChatMessage])
-
-            addActivity('scan', medicineData.medicine_name)
-
-            // Switch to chat view to show results
-            setTimeout(() => setCurrentScreen('chat'), 1000)
+          } else {
+            // If we couldn't extract medicine name, show raw response
+            const errorMsg = result.response.message || 'Could not extract medicine information from the image. Please try with a clearer image.'
+            setScanResult({
+              medicine_name: 'Unable to identify',
+              generic_name: '',
+              category: '',
+              uses: [errorMsg],
+              pregnancy_warning: '',
+              side_effects: [],
+              contraindications: [],
+              dosage_note: 'Please try scanning again with a clearer image.'
+            })
           }
         }
+      } else {
+        console.error('Upload failed:', uploadResult.message)
       }
     } catch (error) {
       console.error('Scan error:', error)
@@ -306,12 +381,19 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [])
 
-  const quickReplies = [
-    'Is this medicine safe during pregnancy?',
-    'What are the side effects?',
-    'Can I take this with other medications?',
-    'What is the recommended dosage?'
-  ]
+  const quickReplies = userProfile.isPregnant === 'yes'
+    ? [
+        'I have a headache. What should I do?',
+        'Which medicines are safe during pregnancy?',
+        'I have morning sickness. Any remedies?',
+        'What foods should I avoid?'
+      ]
+    : [
+        'I have a fever. What should I do?',
+        'How can I improve my sleep?',
+        'What are healthy eating tips?',
+        'I have a stomach ache. Help?'
+      ]
 
   // Screen Renders
   const renderLogin = () => (
@@ -569,7 +651,7 @@ export default function Home() {
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 max-w-4xl w-full mx-auto">
-        {chatMessages.length === 0 ? (
+        {chatMessages.length === 0 && !loading ? (
           <div className="text-center py-12">
             <div className="w-20 h-20 bg-[#98D8C8] rounded-full flex items-center justify-center mx-auto mb-4">
               <MessageSquare className="w-10 h-10 text-white" />
@@ -637,6 +719,20 @@ export default function Home() {
                 </div>
               </div>
             ))}
+
+            {/* Typing Indicator */}
+            {loading && (
+              <div className="flex justify-start">
+                <div className="bg-[#D4F1E8] rounded-2xl p-4 shadow-md">
+                  <div className="flex gap-2">
+                    <div className="w-2 h-2 bg-[#98D8C8] rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                    <div className="w-2 h-2 bg-[#98D8C8] rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                    <div className="w-2 h-2 bg-[#98D8C8] rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div ref={chatEndRef} />
           </div>
         )}
